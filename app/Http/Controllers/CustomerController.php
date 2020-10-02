@@ -27,7 +27,9 @@ class CustomerController extends Controller
             ->orderBy('users.id', 'DESC')
             ->get()
             ->toArray();
+
         return view('administrator.people.client.manage_clients', compact('clients'));
+
     }
 
     public function print()
@@ -40,7 +42,9 @@ class CustomerController extends Controller
             ->orderBy('users.id', 'DESC')
             ->get()
             ->toArray();
+
         return view('administrator.people.client.clients_print', compact('clients'));
+        
     }
 
     public function clients_pdf()

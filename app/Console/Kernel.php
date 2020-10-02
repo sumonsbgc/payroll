@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Services\Attendence;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -26,6 +27,11 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->call(function(){
+            $att = new Attendence;
+            $att->setAttendence();
+        });
+
     }
 
     /**

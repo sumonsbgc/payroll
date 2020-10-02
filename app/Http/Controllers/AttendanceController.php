@@ -2,29 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Attendance;
-use App\Holiday;
-use App\LeaveCategory;
-use App\SetTime;
-use App\User;
-use App\WorkingDay;
-
 use DB;
 use PDF;
-
 use Auth;
+use App\User;
+use App\Holiday;
+use App\SetTime;
+
+use App\Attendance;
+use App\WorkingDay;
+
+use App\LeaveCategory;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
+    private $att;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
-        return view('administrator.hrm.attendance.manage_attendance');
+        $date = date('d');
+        $month = date('m');
+        $year = date('Y');
+
+        $number_of_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        $attendances = $this->attendence($year, $month);
+        $employees = $this->employees();
+        $weekly_holidays = $this->weekly_holidays();
+        $monthly_holidays = $this->monthly_holidays($year, $month);
+
+        return view('administrator.hrm.attendance.manage_attendance', compact('date', 'number_of_days', 'attendances', 'employees', 'weekly_holidays', 'monthly_holidays'));
     }
 
     /**
@@ -35,6 +47,7 @@ class AttendanceController extends Controller
      */
     public function set_attendance(Request $request)
     {
+
         $attendance_day = date("D", strtotime($request->date));
 
         $weekly_holidays = WorkingDay::where('working_status', 0)
@@ -76,6 +89,7 @@ class AttendanceController extends Controller
         if (empty($attendances)) {
             return view('administrator.hrm.attendance.set_attendance', compact('employees', 'leave_categories', 'date'));
         }
+
         return view('administrator.hrm.attendance.edit_attendance', compact('employees', 'leave_categories', 'date', 'attendances'));
     }
 
@@ -88,9 +102,7 @@ class AttendanceController extends Controller
     public function store(Request $request)
     {
 
-        // return $request;
         for ($i = 0; $i < count($request->user_id); $i++) {
-
             Attendance::create([
                 'created_by' => auth()->user()->id,
                 'user_id' => $request->user_id[$i],
@@ -146,11 +158,19 @@ class AttendanceController extends Controller
     public function get_report(Request $request)
     {
         $date = $request->date;
+
         $month = date("m", strtotime($date));
         $year = date("Y", strtotime($date));
 
         $number_of_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        $attendances = $this->attendence($year, $month);
+        $employees = $this->employees();
+        $weekly_holidays = $this->weekly_holidays();
+        $monthly_holidays = $this->monthly_holidays($year, $month);
+        return view('administrator.hrm.attendance.get_report', compact('date', 'attendances', 'employees', 'number_of_days', 'weekly_holidays', 'monthly_holidays'));
+    }
 
+    public function attendence($year, $month){
         $attendances = Attendance::query()
             ->leftjoin('leave_categories as leave', 'attendances.leave_category_id', '=', 'leave.id')
             ->whereYear('attendances.attendance_date', '=', $year)
@@ -158,6 +178,9 @@ class AttendanceController extends Controller
             ->get(['attendances.*', 'leave.leave_category'])
             ->toArray();
 
+        return $attendances;
+    }
+    public function employees(){
         $employees = User::query()
             ->leftjoin('designations as designations', 'users.designation_id', '=', 'designations.id')
             ->orderBy('users.name', 'ASC')
@@ -166,19 +189,21 @@ class AttendanceController extends Controller
             ->get(['designations.designation', 'users.name', 'users.id'])
             ->toArray();
 
+        return $employees;
+    }
+    public function weekly_holidays(){
         $weekly_holidays = WorkingDay::where('working_status', 0)
             ->get()
             ->toArray();
-
+        return $weekly_holidays;
+    }
+    public function monthly_holidays($year, $month){
         $monthly_holidays = Holiday::whereYear('date', '=', $year)
             ->whereMonth('date', '=', $month)
             ->get(['date', 'holiday_name'])
             ->toArray();
-
-        return view('administrator.hrm.attendance.get_report', compact('date', 'attendances', 'employees', 'number_of_days', 'weekly_holidays', 'monthly_holidays'));
+        return $monthly_holidays;
     }
-
-
     /**
      * Store a newly created resource in storage.
      *
@@ -274,7 +299,7 @@ class AttendanceController extends Controller
         $empid = $request->emp_id;
         $startdate = $request->date1;
         $enddate = $request->date2;
-        
+
         $attendance = DB::table('attendances')->whereBetween('attendance_date', [$startdate, $enddate])->where('user_id', $empid)->get();
 
         $attds =  DB::table('attendances')->where('attendance_status', 1)->where('user_id', $empid)->whereBetween('attendance_date', [$startdate, $enddate])->get();

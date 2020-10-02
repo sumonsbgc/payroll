@@ -16,7 +16,6 @@ class MachineAttController extends Controller
 
     public function getLog()
     {
-
         $schedule = [
             "start_date" => "2020-09-26",
             "end_date"   => "2020-09-26",
@@ -29,9 +28,6 @@ class MachineAttController extends Controller
 
         $start_users = array_column(array_reverse($results->log), 'access_time', 'registration_id');
         $end_users = array_column($results->log, 'access_time', 'registration_id');
-
-        // dd(collect(collect($results)->collapse()->all()));
-
 
         return view('home', ["start" => $start_users, "end" => $end_users]);
     }

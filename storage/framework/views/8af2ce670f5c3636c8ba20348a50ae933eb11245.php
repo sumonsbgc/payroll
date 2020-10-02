@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <!-- /.box-header -->
-                <form action="<?php echo e(route('setting.option.store')); ?>" method="post" name="option_type_form">
+                <form action="<?php echo e(route('setting.option.store')); ?>" method="post" name="option_type_form" enctype="multipart/form-data">
                     <?php echo e(csrf_field()); ?>
 
                     <div class="box-body">
@@ -56,14 +56,22 @@
                             </div>
                             <!-- /.Notification Box -->
                             <div class="col-md-6">
-                                <label for="logo"><?php echo e(__('Upload Logo')); ?> <span class="text-danger">*</span></label>
-                                <div class="form-group<?php echo e($errors->has('logo') ? ' has-error' : ''); ?> has-feedback">
-                                    <input type="file" name="logo" id="logo" class="form-control">
-                                    <?php if($errors->has('logo')): ?>
-                                        <span class="help-block">
-                                            <strong><?php echo e($errors->first('logo')); ?></strong>
-                                        </span>
-                                    <?php endif; ?>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <label for="logo"><?php echo e(__('Upload Logo')); ?> <span class="text-danger">*</span></label>
+                                        <div class="form-group<?php echo e($errors->has('logo') ? ' has-error' : ''); ?> has-feedback">
+                                            <input type="file" name="logo" id="logo" class="form-control">
+                                            <input type="hidden" name="hidden_logo" value="<?php echo e(old('logo', $options['logo'])); ?>">
+                                            <?php if($errors->has('logo')): ?>
+                                                <span class="help-block">
+                                                    <strong><?php echo e($errors->first('logo')); ?></strong>
+                                                </span>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <img src="<?php echo e(asset('public/storage/'.$options['logo'])); ?>" alt="" class="img-fluid">
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -71,7 +79,7 @@
                                         class="text-danger">*</span></label>
                                 <div class="form-group<?php echo e($errors->has('site-title') ? ' has-error' : ''); ?> has-feedback">
                                     <input type="text" name="site-title" id="site-title" class="form-control"
-                                        placeholder="Application Title">
+                                        placeholder="Application Title" value="<?php echo e(old('site-title', $options['site-title'])); ?>">
                                     <?php if($errors->has('site-title')): ?>
                                         <span class="help-block">
                                             <strong><?php echo e($errors->first('site-title')); ?></strong>
@@ -82,12 +90,13 @@
 
                             <!-- /.col -->
                             <div class="col-md-6">
-                                <label for="office_address"><?php echo e(__('Office Address')); ?> <span
-                                        class="text-danger">*</span></label>
-                                <div
-                                    class="form-group<?php echo e($errors->has('office_address') ? ' has-error' : ''); ?> has-feedback">
-                                    <textarea class="textarea text-description" name="office_address" id="office_address"
-                                        placeholder="<?php echo e(__('Office Address..')); ?>" style="height: 90px;"><?php echo e(old('office_address')); ?></textarea>
+
+                                <label for="office_address">
+                                    <?php echo e(__('Office Address')); ?> <span class="text-danger">*</span>
+                                </label>
+
+                                <div class="form-group<?php echo e($errors->has('office_address') ? ' has-error' : ''); ?> has-feedback">
+                                    <textarea class="textarea text-description" name="office_address" id="office_address" placeholder="<?php echo e(__('Office Address..')); ?>" style="height: 90px;"><?php echo e(old('office_address', $options['office_address'])); ?></textarea>
                                     <?php if($errors->has('office_address')): ?>
                                         <span class="help-block">
                                             <strong><?php echo e($errors->first('office_address')); ?></strong>
@@ -96,14 +105,14 @@
                                 </div>
                                 <!-- /.form-group -->
                             </div>
-                            <!-- /.col -->
 
+                            <!-- /.col -->
                             <div class="col-md-6">
-                                <label for="company-name"><?php echo e(__('Company Name (For Invoice)')); ?> <span
-                                        class="text-danger">*</span></label>
+                                <label for="company-name">
+                                    <?php echo e(__('Company Name (For Invoice)')); ?> <span class="text-danger">*</span>
+                                </label>
                                 <div class="form-group<?php echo e($errors->has('company-name') ? ' has-error' : ''); ?> has-feedback">
-                                    <input type="text" name="company-name" id="company-name" class="form-control"
-                                        placeholder="Company Name">
+                                    <input type="text" name="company-name" id="company-name" class="form-control" placeholder="Company Name" value="<?php echo e(old('company-name', $options['company-name'])); ?>">
                                     <?php if($errors->has('company-name')): ?>
                                         <span class="help-block">
                                             <strong><?php echo e($errors->first('company-name')); ?></strong>
@@ -116,7 +125,7 @@
                                 <label for="mobile"><?php echo e(__('Mobile Number')); ?> <span class="text-danger">*</span></label>
                                 <div class="form-group<?php echo e($errors->has('mobile') ? ' has-error' : ''); ?> has-feedback">
                                     <input type="text" name="mobile" id="mobile" class="form-control"
-                                        placeholder="Mobile Number">
+                                        placeholder="Mobile Number" value="<?php echo e(old('mobile', $options['mobile'])); ?>">
                                     <?php if($errors->has('mobile')): ?>
                                         <span class="help-block">
                                             <strong><?php echo e($errors->first('mobile')); ?></strong>
@@ -126,27 +135,31 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label for="late-count-status"><?php echo e(__('Late Count Status')); ?></label> <span
-                                    class="text-danger">*</span></label>
+                                <label for="late-count-status"><?php echo e(__('Late Count Status')); ?> <span class="text-danger">*</span></label>
                                 <div class="form-group <?php echo e($errors->has('late-count-status' ? ' has-error' : '')); ?> has-feedback">
-                                    <input type="radio" class="custom-control-input" name="late-count-status" value="1" checked> Yes <br>
-                                    <input type="radio" class="custom-control-input" name="late-count-status" value="0"> No <br>
+
+                                    <input type="radio" class="custom-control-input late-count-status" name="late-count-status" value="1" <?php echo e($options['late-count-status'] != 0 ? 'checked' : ''); ?>> Yes <br>
+                                    <input type="radio" class="custom-control-input late-count-status" name="late-count-status" value="0" <?php echo e($options['late-count-status'] != 1 ? 'checked' : ''); ?>> No <br>
 
                                     <?php if($errors->has('late-count-status')): ?>
                                         <span>
                                             <strong><?php echo e($errors->first('late-count-status')); ?></strong>
                                         </span>
                                     <?php endif; ?>
+
                                 </div>
                             </div>
 
                             <div class="col-md-6">
-                                <label for="overtime-count-status"><?php echo e(__('Overtime Count Status')); ?></label> <span
-                                    class="text-danger">*</span></label>
-                                <div class="form-group <?php echo e($errors->has('overtime-count-status' ? ' has-error' : '')); ?> has-feedback">
+                                <label for="overtime-count-status">
+                                    <?php echo e(__('Overtime Count Status')); ?>
 
-                                    <input type="radio" class="custom-control-input"  name="overtime-count-status" value="1"> Yes <br>
-                                    <input type="radio" class="custom-control-input" name="overtime-count-status" value="0" checked> No <br>
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <div class="form-group <?php echo e($errors->has('overtime-count-status' ? ' has-error' : '')); ?> has-feedback">
+                                    <input type="radio" class="custom-control-input overtime-count-status" name="overtime-count-status" value="1" <?php echo e($options['overtime-count-status'] != 0 ? 'checked' : ''); ?>> Yes <br>
+                                    <input type="radio" class="custom-control-input overtime-count-status" name="overtime-count-status" value="0" <?php echo e($options['overtime-count-status'] != 1 ? 'checked' : ''); ?>> No <br>
 
                                     <?php if($errors->has('overtime-count-status')): ?>
                                         <span>
@@ -155,12 +168,11 @@
                                     <?php endif; ?>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 entry-time">
                                 <label for="entry-time"><?php echo e(__('Exact Entry Time (AM)')); ?> <span
                                         class="text-danger">*</span></label>
                                 <div class="form-group<?php echo e($errors->has('entry-time') ? ' has-error' : ''); ?> has-feedback">
-                                    <input type="text" name="entry-time" id="entry-time" class="form-control"
-                                        placeholder="e.g. 9:00">
+                                    <input type="text" name="entry-time" id="entry-time" class="form-control" placeholder="e.g. 9:00" value="<?php echo e(old('entry-time', $options['entry-time'])); ?>">
                                     <?php if($errors->has('entry-time')): ?>
                                         <span class="help-block">
                                             <strong><?php echo e($errors->first('entry-time')); ?></strong>
@@ -168,13 +180,13 @@
                                     <?php endif; ?>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 late-day-count">
                                 <label for="late-day-count"><?php echo e(__('Late Day Count Number')); ?> <span
                                         class="text-danger">*</span></label>
                                 <div
                                     class="form-group<?php echo e($errors->has('late-day-count') ? ' has-error' : ''); ?> has-feedback">
                                     <input type="text" name="late-day-count" id="late-day-count" class="form-control"
-                                        placeholder="e.g. 3">
+                                        placeholder="e.g. 3" value="<?php echo e(old('late-day-count', $options['late-day-count'])); ?>">
                                     <?php if($errors->has('late-day-count')): ?>
                                         <span class="help-block">
                                             <strong><?php echo e($errors->first('late-day-count')); ?></strong>
@@ -183,13 +195,13 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6 late-count-start-titme">
                                 <label for="late-count-start-titme"><?php echo e(__('Late count Start Time (AM)')); ?> <span
                                         class="text-danger">*</span></label>
                                 <div
                                     class="form-group<?php echo e($errors->has('late-count-start-titme') ? ' has-error' : ''); ?> has-feedback">
                                     <input type="text" name="late-count-start-titme" id="late-count-start-titme"
-                                        class="form-control" placeholder="e.g. 9:15">
+                                        class="form-control" placeholder="e.g. 9:15" value="<?php echo e(old('late-count-start-titme', $options['late-count-start-titme'])); ?>">
                                     <?php if($errors->has('late-count-start-titme')): ?>
                                         <span class="help-block">
                                             <strong><?php echo e($errors->first('late-count-start-titme')); ?></strong>
@@ -198,13 +210,12 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6 overtime-count-time">
                                 <label for="overtime-count-time"><?php echo e(__('Overtime Count time')); ?> <span
                                         class="text-danger">*</span></label>
                                 <div
                                     class="form-group<?php echo e($errors->has('overtime-count-time') ? ' has-error' : ''); ?> has-feedback">
-                                    <input type="text" name="overtime-count-time" id="overtime-count-time"
-                                        class="form-control" placeholder="Overtime Count time">
+                                    <input type="text" name="overtime-count-time" id="overtime-count-time" class="form-control" placeholder="Overtime Count time" value="<?php echo e(old('overtime-count-time', $options['overtime-count-time'])); ?>">
                                     <?php if($errors->has('overtime-count-time')): ?>
                                         <span class="help-block">
                                             <strong><?php echo e($errors->first('overtime-count-time')); ?></strong>

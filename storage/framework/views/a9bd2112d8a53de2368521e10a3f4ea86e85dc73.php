@@ -216,4 +216,18 @@
         });
     }(jQuery))
 </script>
-<!-- =================Data Search================== --><?php /**PATH /var/www/projects/payroll/resources/views/administrator/layouts/scripts.blade.php ENDPATH**/ ?>
+<!-- =================Data Search================== -->
+
+<script>
+    $(document).ready(function(){
+        $('.late-count-status').on('click', function(){
+            $(this).prop('checked', 'checked');
+            let status = $(this).val();
+            if( status == 0 ){
+                $('.entry-time').hide()
+                $('.late-count-start-titme').hide()
+                $('.late-day-count').hide()
+            }
+        })
+    });
+</script><?php /**PATH /var/www/projects/payroll/resources/views/administrator/layouts/scripts.blade.php ENDPATH**/ ?>
