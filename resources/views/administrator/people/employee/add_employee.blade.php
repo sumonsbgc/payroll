@@ -138,7 +138,7 @@
                             </div>
 
                             <label for="password">{{ __('Password') }} <span class="text-danger">*</span></label>
-                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} has-feedback">
+                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }} has-feedback">
                                 <input type="text" name="password" id="password" class="form-control" value="{{ old('password') }}" placeholder="{{ __('Password..') }}">
                                 @if ($errors->has('password'))
                                 <span class="help-block">
@@ -220,8 +220,16 @@
                             </div>
                             <!-- /.form-group -->
 
-                            <input type="hidden" name="home_district" value="None">
-
+                            <label for="home_district">{{ __(' Home District') }}</label>
+                            <div class="form-group{{ $errors->has('home_district') ? ' has-error' : '' }} has-feedback">
+                                <input type="text" name="home_district" id="home_district" class="form-control" value="{{ old('home_district') }}">
+                                @if ($errors->has('home_district'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('home_district') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                            <!-- /.form-group -->
                             <!-- /.form-group -->
 
                             <label for="id_name">{{ __('ID Name') }}</label>
@@ -266,23 +274,6 @@
                                 @endif
                             </div>
                             <!-- /.form-group -->
-
-                            <label for="joining_position">{{ __('Department') }} <span class="text-danger">*</span></label>
-                            <div class="form-group{{ $errors->has('joining_position') ? ' has-error' : '' }} has-feedback">
-                                <select name="joining_position" id="joining_position" class="form-control">
-                                    <option value="" selected disabled>{{ __('Select one') }}</option>
-                                    <?php $departments = \App\Department::all(); ?>
-                                    @foreach($departments as $department)
-                                    <option value="{{ $department['id'] }}">{{ $department['department'] }}</option>
-                                    @endforeach
-                                </select>
-                                @if ($errors->has('joining_position'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('joining_position') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                            <!-- /.form-group -->
                         </div>
 
                         <div class="col-md-3">
@@ -301,7 +292,6 @@
                                     <option value="{{ $reference['name'] }}">{{ $reference['name'] }}</option>
                                     @endforeach
                                 </select>
-
                             </div>
                             <!-- /.form-group -->
 
@@ -361,9 +351,29 @@
                                 @endif
                             </div>
                             <!-- /.form-group -->
+
+                            <label for="joining_position">{{ __('Department') }} <span class="text-danger">*</span></label>
+                            <div class="form-group{{ $errors->has('joining_position') ? ' has-error' : '' }} has-feedback">
+                                <select name="joining_position" id="joining_position" class="form-control">
+                                    <option value="" selected disabled>{{ __('Select one') }}</option>
+                                    <?php $departments = \App\Department::all(); ?>
+                                    @foreach($departments as $department)
+                                    <option value="{{ $department['id'] }}">{{ $department['department'] }}</option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('joining_position'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('joining_position') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                            <!-- /.form-group -->
+
                         </div>
 
-                        <!-- /.col -->
+                        <div class="col-md-12">
+                            <div class="row">
+                                                        <!-- /.col -->
                         <div class="col-md-4">
                             <label for="academic_qualification">{{ __('Academic Qualification') }}</label>
                             <div class="form-group{{ $errors->has('academic_qualification') ? ' has-error' : '' }} has-feedback">
@@ -376,6 +386,7 @@
                             </div>
                             <!-- /.form-group -->
                         </div>
+
                         <div class="col-md-4">
                             <label for="professional_qualification">{{ __('Professional Qualification') }}</label>
                             <div class="form-group{{ $errors->has('professional_qualification') ? ' has-error' : '' }} has-feedback">
@@ -388,6 +399,7 @@
                             </div>
                             <!-- /.form-group -->
                         </div>
+
                         <!-- /.col -->
                         <div class="col-md-4">
                             <label for="experience">{{ __('Experience') }}</label>
@@ -401,14 +413,16 @@
                             </div>
 
                         </div>
-
+                            </div>
+                        </div>
                         <!-- /.row -->
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
                         <a href="{{ url('/people/employees') }}" class="btn btn-danger btn-flat"><i class="icon fa fa-close"></i>{{ __('Cancel') }} </a>
                         <button type="submit" class="btn btn-primary btn-flat"><i class="icon fa fa-plus"></i>
-                            {{ __('Add') }}</button>
+                            {{ __('Add') }}
+                        </button>
                     </div>
             </form>
         </div>

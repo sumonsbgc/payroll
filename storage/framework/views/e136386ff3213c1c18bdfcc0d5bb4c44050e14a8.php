@@ -98,23 +98,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $__currentLoopData = $employees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $employee): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                
+                                <?php $__currentLoopData = $employees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $employee): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>                                
                                 <tr>
-                                    <td><a
-                                            href="<?php echo e(url('/people/employees/details/' . $employee['id'])); ?>"><?php echo e($employee['name']); ?></a>
-                                    </td>
+                                    <td><a href="<?php echo e(url('/people/employees/details/' . $employee['id'])); ?>"><?php echo e($employee['name']); ?></a></td>
                                     <?php for($i = 1; $i <= $number_of_days; $i++): ?> 
                                         <td class="text-center">
-
                                         <?php if($i>=1 AND $i<=9): ?> 
-                                            <?php $day=$date."-0".$i; ?>
+                                            
+                                            <?php $day = $date."-0".$i; ?>
                                         <?php else: ?> 
-                                            <?php $day=$date."-".$i; ?>
+                                            <?php $day = $date."-".$i; ?>
                                         <?php endif; ?>
 
-                                        <?php $day_name=date("D", strtotime($day)) ?>
+                                        <?php $day_name = date("D", strtotime($day)); ?>
+
                                         <?php $__currentLoopData = $monthly_holidays; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $monthly_holiday): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
-                                            <?php if($day==$monthly_holiday['date']): ?> 
+                                            <?php if($day == $monthly_holiday['date']): ?> 
                                             <span class="btn btn-xs btn-danger btn-flat" data-toggle="tooltip" data-original-title="<?php echo e($monthly_holiday['holiday_name']); ?>">
                                                 <?php echo e(__('H')); ?>
 
@@ -141,11 +141,14 @@
                                                     <?php if($attendance['attendance_status'] == 0): ?>
                                                         <?php if($attendance['leave_category_id'] == 0): ?>
                                                             <span class="btn btn-xs btn-warning btn-flat" data-toggle="tooltip"
-                                                                data-original-title="Absence"><?php echo e(__('A')); ?></span>
+                                                                data-original-title="Absence">
+                                                                <?php echo e(__('A')); ?>
+
+                                                            </span>
                                                         <?php else: ?>
                                                             <span class="btn btn-xs btn-info btn-flat" data-toggle="tooltip"
                                                                 data-original-title="<?php echo e($attendance['leave_category']); ?>"><?php echo e(__('L')); ?></span>
-                                                        <?php endif; ?>                
+                                                        <?php endif; ?>
                                                     <?php endif; ?>
                                                 <?php endif; ?>
                                             <?php endif; ?>

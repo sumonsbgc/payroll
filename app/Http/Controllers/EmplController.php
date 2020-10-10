@@ -223,6 +223,7 @@ class EmplController extends Controller
     public function edit($id)
     {
         $employee = User::find($id)->toArray();
+
         $designations = Designation::where('deletion_status', 0)
             ->where('publication_status', 1)
             ->orderBy('designation', 'ASC')
@@ -230,6 +231,7 @@ class EmplController extends Controller
             ->get()
             ->toArray();
         $roles = Role::all();
+
         return view('administrator.people.employee.edit_employee', compact('employee', 'roles', 'designations'));
     }
 
@@ -248,6 +250,7 @@ class EmplController extends Controller
 
         request()->validate([
             'employee_id' => 'required|max:250',
+            'fingerprint_user_id' => 'required',
             'name' => 'required|max:100',
             'father_name' => 'nullable|max:100',
             'mother_name' => 'nullable|max:100',
@@ -281,6 +284,7 @@ class EmplController extends Controller
         ]);
 
         $employee->employee_id = $request->get('employee_id');
+        $employee->fingerprint_user_id = $request->get('fingerprint_user_id');
         $employee->name = $request->get('name');
         $employee->father_name = $request->get('father_name');
         $employee->mother_name = $request->get('mother_name');

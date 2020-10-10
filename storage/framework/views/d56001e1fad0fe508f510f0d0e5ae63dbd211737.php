@@ -59,8 +59,7 @@
                             <?php endif; ?>
                         </div>
                         <!-- /.Notification Box -->
-
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <label for="employee_id"><?php echo e(__(' ID')); ?> <span class="text-danger">*</span></label>
                             <div class="form-group<?php echo e($errors->has('employee_id') ? ' has-error' : ''); ?> has-feedback">
                                 <input type="text" name="employee_id" id="employee_id" class="form-control"
@@ -121,10 +120,38 @@
                             </div>
                             <!-- /.form-group -->
 
+                            <label for="gender"><?php echo e(__(' Gender')); ?> <span class="text-danger">*</span></label>
+                            <div class="form-group<?php echo e($errors->has('gender') ? ' has-error' : ''); ?> has-feedback">
+                                <select name="gender" id="gender" class="form-control">
+                                    <option value="" selected disabled><?php echo e(__(' Select one')); ?></option>
+                                    <option value="m"><?php echo e(__(' Male')); ?></option>
+                                    <option value="f"><?php echo e(__(' Female')); ?></option>
+                                </select>
+                                <?php if($errors->has('gender')): ?>
+                                <span class="help-block">
+                                    <strong><?php echo e($errors->first('gender')); ?></strong>
+                                </span>
+                                <?php endif; ?>
+                            </div>
+                            <!-- /.form-group -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-3">
+
+                            <label for="fingerprint_user_id"><?php echo e(__('Fingerprint Registration ID')); ?><span class="text-danger">*</span></label>
+                            <div class="form-group<?php echo e($errors->has('fingerprint_user_id') ? ' has-error' : ''); ?> has-feedback">
+                                <input type="text" name="fingerprint_user_id" id="fingerprint_user_id" class="form-control" value="<?php echo e($employee['fingerprint_user_id']); ?>" placeholder="<?php echo e(__('Enter Fingerprint Registration ID..')); ?>">
+                                <?php if($errors->has('fingerprint_user_id')): ?>
+                                <span class="help-block">
+                                    <strong><?php echo e($errors->first('fingerprint_user_id')); ?></strong>
+                                </span>
+                                <?php endif; ?>
+                            </div>
+                            <!-- /.form-group -->
+
                             <label for="email"><?php echo e(__(' Email')); ?> <span class="text-danger">*</span></label>
                             <div class="form-group<?php echo e($errors->has('email') ? ' has-error' : ''); ?> has-feedback">
-                                <input type="text" name="email" id="email" class="form-control"
-                                    value="<?php echo e($employee['email']); ?>">
+                                <input type="text" name="email" id="email" class="form-control" value="<?php echo e($employee['email']); ?>">
                                 <?php if($errors->has('email')): ?>
                                 <span class="help-block">
                                     <strong><?php echo e($errors->first('email')); ?></strong>
@@ -133,10 +160,8 @@
                             </div>
                             <!-- /.form-group -->
 
-                            <label for="contact_no_one"><?php echo e(__(' Contact No')); ?><span
-                                    class="text-danger">*</span></label>
-                            <div
-                                class="form-group<?php echo e($errors->has('contact_no_one') ? ' has-error' : ''); ?> has-feedback">
+                            <label for="contact_no_one"><?php echo e(__(' Contact No')); ?><span class="text-danger">*</span></label>
+                            <div class="form-group<?php echo e($errors->has('contact_no_one') ? ' has-error' : ''); ?> has-feedback">
                                 <input type="text" name="contact_no_one" id="contact_no_one" class="form-control"
                                     value="<?php echo e($employee['contact_no_one']); ?>">
                                 <?php if($errors->has('contact_no_one')): ?>
@@ -148,40 +173,12 @@
                             <!-- /.form-group -->
 
                             <label for="emergency_contact"><?php echo e(__(' Emergency Contact')); ?></label>
-                            <div
-                                class="form-group<?php echo e($errors->has('emergency_contact') ? ' has-error' : ''); ?> has-feedback">
+                            <div class="form-group<?php echo e($errors->has('emergency_contact') ? ' has-error' : ''); ?> has-feedback">
                                 <input type="text" name="emergency_contact" id="emergency_contact" class="form-control"
                                     value="<?php echo e($employee['emergency_contact']); ?>">
                                 <?php if($errors->has('emergency_contact')): ?>
                                 <span class="help-block">
                                     <strong><?php echo e($errors->first('emergency_contact')); ?></strong>
-                                </span>
-                                <?php endif; ?>
-                            </div>
-                            <!-- /.form-group -->
-
-                            <label for="web"><?php echo e(__(' Web')); ?></label>
-                            <div class="form-group<?php echo e($errors->has('web') ? ' has-error' : ''); ?> has-feedback">
-                                <input type="text" name="web" id="web" class="form-control"
-                                    value="<?php echo e($employee['web']); ?>">
-                                <?php if($errors->has('web')): ?>
-                                <span class="help-block">
-                                    <strong><?php echo e($errors->first('web')); ?></strong>
-                                </span>
-                                <?php endif; ?>
-                            </div>
-                            <!-- /.form-group -->
-
-                            <label for="gender"><?php echo e(__(' Gender')); ?> <span class="text-danger">*</span></label>
-                            <div class="form-group<?php echo e($errors->has('gender') ? ' has-error' : ''); ?> has-feedback">
-                                <select name="gender" id="gender" class="form-control">
-                                    <option value="" selected disabled><?php echo e(__(' Select one')); ?></option>
-                                    <option value="m"><?php echo e(__(' Male')); ?></option>
-                                    <option value="f"><?php echo e(__(' Female')); ?></option>
-                                </select>
-                                <?php if($errors->has('gender')): ?>
-                                <span class="help-block">
-                                    <strong><?php echo e($errors->first('gender')); ?></strong>
                                 </span>
                                 <?php endif; ?>
                             </div>
@@ -201,16 +198,28 @@
                                 <?php endif; ?>
                             </div>
                             <!-- /.form-group -->
-                        </div>
-                        <!-- /.col -->
 
-                        <div class="col-md-6">
-                            <label for="present_address"><?php echo e(__(' Present Address')); ?><span
-                                    class="text-danger">*</span></label>
-                            <div
-                                class="form-group<?php echo e($errors->has('present_address') ? ' has-error' : ''); ?> has-feedback">
-                                <input type="text" name="present_address" id="present_address" class="form-control"
-                                    value="<?php echo e($employee['present_address']); ?>">
+                            <label for="designation_id"><?php echo e(__(' Designation')); ?> <span class="text-danger">*</span></label>
+                            <div class="form-group<?php echo e($errors->has('designation_id') ? ' has-error' : ''); ?> has-feedback">
+                                <select name="designation_id" id="designation_id" class="form-control">
+                                    <option value="" selected disabled><?php echo e(__(' Select one')); ?></option>
+                                    <?php $__currentLoopData = $designations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $designation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($designation['id']); ?>"><?php echo e($designation['designation']); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </select>
+                                <?php if($errors->has('designation_id')): ?>
+                                    <span class="help-block">
+                                        <strong><?php echo e($errors->first('designation_id')); ?></strong>
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                        <!-- /.form-group -->
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="present_address"><?php echo e(__(' Present Address')); ?><span class="text-danger">*</span></label>
+                            <div class="form-group<?php echo e($errors->has('present_address') ? ' has-error' : ''); ?> has-feedback">
+                                <input type="text" name="present_address" id="present_address" class="form-control" value="<?php echo e($employee['present_address']); ?>">
                                 <?php if($errors->has('present_address')): ?>
                                 <span class="help-block">
                                     <strong><?php echo e($errors->first('present_address')); ?></strong>
@@ -272,24 +281,6 @@
                             </div>
                             <!-- /.form-group -->
 
-                            <label for="designation_id"><?php echo e(__(' Designation')); ?> <span
-                                    class="text-danger">*</span></label>
-                            <div
-                                class="form-group<?php echo e($errors->has('designation_id') ? ' has-error' : ''); ?> has-feedback">
-                                <select name="designation_id" id="designation_id" class="form-control">
-                                    <option value="" selected disabled><?php echo e(__(' Select one')); ?></option>
-                                    <?php $__currentLoopData = $designations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $designation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($designation['id']); ?>"><?php echo e($designation['designation']); ?></option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                </select>
-                                <?php if($errors->has('designation_id')): ?>
-                                <span class="help-block">
-                                    <strong><?php echo e($errors->first('designation_id')); ?></strong>
-                                </span>
-                                <?php endif; ?>
-                            </div>
-                            <!-- /.form-group -->
-
                             <label for="joining_position"><?php echo e(__(' Department')); ?> <span
                                     class="text-danger">*</span></label>
                             <div
@@ -309,6 +300,8 @@
                                 <?php endif; ?>
                             </div>
                             <!-- /.form-group -->
+                        </div>
+                        <div class="col-md-3">
 
                             <label for="marital_status"><?php echo e(__(' Marital Status')); ?> </label>
                             <div
@@ -358,9 +351,32 @@
                                 <?php endif; ?>
                             </div>
                             <!-- /.form-group -->
+
+                            <label for="reference"><?php echo e(__(' Reference')); ?></label>
+                            <div class="form-group<?php echo e($errors->has('reference') ? ' has-error' : ''); ?> has-feedback">
+                                <input name="reference" id="reference" class="form-control" value="<?php echo e($employee['reference']); ?>" placeholder="Reference">
+                                <?php if($errors->has('reference')): ?>
+                                <span class="help-block">
+                                    <strong><?php echo e($errors->first('reference')); ?></strong>
+                                </span>
+                                <?php endif; ?>
+                            </div>
+                            <!-- /.form-group -->
+
+                            <label for="web"><?php echo e(__(' Web')); ?></label>
+                            <div class="form-group<?php echo e($errors->has('web') ? ' has-error' : ''); ?> has-feedback">
+                                <input type="text" name="web" id="web" class="form-control" value="<?php echo e($employee['web']); ?>">
+                                <?php if($errors->has('web')): ?>
+                                    <span class="help-block">
+                                        <strong><?php echo e($errors->first('web')); ?></strong>
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                            <!-- /.form-group -->
                         </div>
+                        <div class="row"><div class="col-md-12">
                         <!-- /.col -->
-                        <div class="col-md-12">
+                        <div class="col-md-4">
                             <label for="academic_qualification"><?php echo e(__(' Academic Qualification')); ?></label>
                             <div
                                 class="form-group<?php echo e($errors->has('academic_qualification') ? ' has-error' : ''); ?> has-feedback">
@@ -373,7 +389,9 @@
                                 <?php endif; ?>
                             </div>
                             <!-- /.form-group -->
+                        </div>
 
+                        <div class="col-md-4">
                             <label for="professional_qualification"><?php echo e(__(' Professional Qualification')); ?></label>
                             <div
                                 class="form-group<?php echo e($errors->has('professional_qualification') ? ' has-error' : ''); ?> has-feedback">
@@ -386,7 +404,9 @@
                                 <?php endif; ?>
                             </div>
                             <!-- /.form-group -->
+                        </div>
 
+                        <div class="col-md-4">
                             <label for="experience"><?php echo e(__(' Experience')); ?></label>
                             <div class="form-group<?php echo e($errors->has('experience') ? ' has-error' : ''); ?> has-feedback">
                                 <textarea name="experience" id="experience"
@@ -398,19 +418,8 @@
                                 <?php endif; ?>
                             </div>
                             <!-- /.form-group -->
-
-                            <label for="reference"><?php echo e(__(' Reference')); ?></label>
-                            <div class="form-group<?php echo e($errors->has('reference') ? ' has-error' : ''); ?> has-feedback">
-                                <textarea name="reference" id="reference"
-                                    class="form-control textarea"><?php echo e($employee['reference']); ?></textarea>
-                                <?php if($errors->has('reference')): ?>
-                                <span class="help-block">
-                                    <strong><?php echo e($errors->first('reference')); ?></strong>
-                                </span>
-                                <?php endif; ?>
-                            </div>
-                            <!-- /.form-group -->
                         </div>
+                    </div></div>
                         <!-- /.row -->
                     </div>
                     <!-- /.box-body -->

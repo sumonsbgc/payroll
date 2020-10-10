@@ -17,15 +17,14 @@
     </section>
 
     <?php
-                $setimes= \App\SetTime::all();
-                foreach($setimes as $time)
-                {
-                $id=$time->id;
-                $intime=$time->in_time;
-                $outtime=$time->out_time;
-                }
-                
-                ?>
+        $setimes= \App\SetTime::all();
+        foreach($setimes as $time)
+        {
+            $id=$time->id;
+            $intime=$time->in_time;
+            $outtime=$time->out_time;
+        }
+    ?>
 
     <!-- Main content -->
     <section class="content">

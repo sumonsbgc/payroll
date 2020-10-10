@@ -94,20 +94,21 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($employees as $employee)
+                                
+                                @foreach($employees as $employee)                                
                                 <tr>
-                                    <td><a href="{{ url('/people/employees/details/' . $employee['id']) }}">{{ $employee['name'] }}</a>
-                                    </td>
+                                    <td><a href="{{ url('/people/employees/details/' . $employee['id']) }}">{{ $employee['name'] }}</a></td>
                                     @for($i = 1; $i <= $number_of_days; $i++) 
                                         <td class="text-center">
-
                                         @if($i>=1 AND $i<=9) 
+                                            {{-- 04-01 --}}
                                             <?php $day = $date."-0".$i; ?>
                                         @else 
                                             <?php $day = $date."-".$i; ?>
                                         @endif
 
                                         <?php $day_name = date("D", strtotime($day)); ?>
+
                                         @foreach($monthly_holidays as $monthly_holiday) 
                                             @if($day == $monthly_holiday['date']) 
                                             <span class="btn btn-xs btn-danger btn-flat" data-toggle="tooltip" data-original-title="{{ $monthly_holiday['holiday_name'] }}">

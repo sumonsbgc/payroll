@@ -232,7 +232,6 @@ class SalaryPaymentController extends Controller
      */
     public function store(Request $request)
     {
-
         $salary = request()->validate([
             'payment_amount' => 'required|numeric',
             'payment_type' => 'required',
@@ -245,7 +244,7 @@ class SalaryPaymentController extends Controller
             'gross_salary' => $request->gross_salary,
             'total_deduction' => $request->total_deduction,
             'net_salary' => $request->net_salary,
-            'provident_fund' => $request->provident_fund,
+            'provident_fund' => $request->provident_fund ?? null,
             'payment_amount' => $request->payment_amount,
             'payment_month' => $request->payment_month . '-01',
             'payment_type' => $request->payment_type,

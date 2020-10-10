@@ -55,8 +55,7 @@
                             @endif
                         </div>
                         <!-- /.Notification Box -->
-
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <label for="employee_id">{{ __(' ID') }} <span class="text-danger">*</span></label>
                             <div class="form-group{{ $errors->has('employee_id') ? ' has-error' : '' }} has-feedback">
                                 <input type="text" name="employee_id" id="employee_id" class="form-control"
@@ -117,10 +116,38 @@
                             </div>
                             <!-- /.form-group -->
 
+                            <label for="gender">{{ __(' Gender') }} <span class="text-danger">*</span></label>
+                            <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }} has-feedback">
+                                <select name="gender" id="gender" class="form-control">
+                                    <option value="" selected disabled>{{ __(' Select one') }}</option>
+                                    <option value="m">{{ __(' Male') }}</option>
+                                    <option value="f">{{ __(' Female') }}</option>
+                                </select>
+                                @if ($errors->has('gender'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('gender') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                            <!-- /.form-group -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-3">
+
+                            <label for="fingerprint_user_id">{{ __('Fingerprint Registration ID') }}<span class="text-danger">*</span></label>
+                            <div class="form-group{{ $errors->has('fingerprint_user_id') ? ' has-error' : '' }} has-feedback">
+                                <input type="text" name="fingerprint_user_id" id="fingerprint_user_id" class="form-control" value="{{ $employee['fingerprint_user_id'] }}" placeholder="{{ __('Enter Fingerprint Registration ID..') }}">
+                                @if ($errors->has('fingerprint_user_id'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('fingerprint_user_id') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                            <!-- /.form-group -->
+
                             <label for="email">{{ __(' Email') }} <span class="text-danger">*</span></label>
                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }} has-feedback">
-                                <input type="text" name="email" id="email" class="form-control"
-                                    value="{{ $employee['email'] }}">
+                                <input type="text" name="email" id="email" class="form-control" value="{{ $employee['email'] }}">
                                 @if ($errors->has('email'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('email') }}</strong>
@@ -129,10 +156,8 @@
                             </div>
                             <!-- /.form-group -->
 
-                            <label for="contact_no_one">{{ __(' Contact No') }}<span
-                                    class="text-danger">*</span></label>
-                            <div
-                                class="form-group{{ $errors->has('contact_no_one') ? ' has-error' : '' }} has-feedback">
+                            <label for="contact_no_one">{{ __(' Contact No') }}<span class="text-danger">*</span></label>
+                            <div class="form-group{{ $errors->has('contact_no_one') ? ' has-error' : '' }} has-feedback">
                                 <input type="text" name="contact_no_one" id="contact_no_one" class="form-control"
                                     value="{{ $employee['contact_no_one'] }}">
                                 @if ($errors->has('contact_no_one'))
@@ -144,40 +169,12 @@
                             <!-- /.form-group -->
 
                             <label for="emergency_contact">{{ __(' Emergency Contact') }}</label>
-                            <div
-                                class="form-group{{ $errors->has('emergency_contact') ? ' has-error' : '' }} has-feedback">
+                            <div class="form-group{{ $errors->has('emergency_contact') ? ' has-error' : '' }} has-feedback">
                                 <input type="text" name="emergency_contact" id="emergency_contact" class="form-control"
                                     value="{{ $employee['emergency_contact'] }}">
                                 @if ($errors->has('emergency_contact'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('emergency_contact') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                            <!-- /.form-group -->
-
-                            <label for="web">{{ __(' Web') }}</label>
-                            <div class="form-group{{ $errors->has('web') ? ' has-error' : '' }} has-feedback">
-                                <input type="text" name="web" id="web" class="form-control"
-                                    value="{{ $employee['web'] }}">
-                                @if ($errors->has('web'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('web') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                            <!-- /.form-group -->
-
-                            <label for="gender">{{ __(' Gender') }} <span class="text-danger">*</span></label>
-                            <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }} has-feedback">
-                                <select name="gender" id="gender" class="form-control">
-                                    <option value="" selected disabled>{{ __(' Select one') }}</option>
-                                    <option value="m">{{ __(' Male') }}</option>
-                                    <option value="f">{{ __(' Female') }}</option>
-                                </select>
-                                @if ($errors->has('gender'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('gender') }}</strong>
                                 </span>
                                 @endif
                             </div>
@@ -197,16 +194,28 @@
                                 @endif
                             </div>
                             <!-- /.form-group -->
-                        </div>
-                        <!-- /.col -->
 
-                        <div class="col-md-6">
-                            <label for="present_address">{{ __(' Present Address') }}<span
-                                    class="text-danger">*</span></label>
-                            <div
-                                class="form-group{{ $errors->has('present_address') ? ' has-error' : '' }} has-feedback">
-                                <input type="text" name="present_address" id="present_address" class="form-control"
-                                    value="{{ $employee['present_address'] }}">
+                            <label for="designation_id">{{ __(' Designation') }} <span class="text-danger">*</span></label>
+                            <div class="form-group{{ $errors->has('designation_id') ? ' has-error' : '' }} has-feedback">
+                                <select name="designation_id" id="designation_id" class="form-control">
+                                    <option value="" selected disabled>{{ __(' Select one') }}</option>
+                                    @foreach($designations as $designation)
+                                    <option value="{{ $designation['id'] }}">{{ $designation['designation'] }}</option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('designation_id'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('designation_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        <!-- /.form-group -->
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="present_address">{{ __(' Present Address') }}<span class="text-danger">*</span></label>
+                            <div class="form-group{{ $errors->has('present_address') ? ' has-error' : '' }} has-feedback">
+                                <input type="text" name="present_address" id="present_address" class="form-control" value="{{ $employee['present_address'] }}">
                                 @if ($errors->has('present_address'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('present_address') }}</strong>
@@ -268,24 +277,6 @@
                             </div>
                             <!-- /.form-group -->
 
-                            <label for="designation_id">{{ __(' Designation') }} <span
-                                    class="text-danger">*</span></label>
-                            <div
-                                class="form-group{{ $errors->has('designation_id') ? ' has-error' : '' }} has-feedback">
-                                <select name="designation_id" id="designation_id" class="form-control">
-                                    <option value="" selected disabled>{{ __(' Select one') }}</option>
-                                    @foreach($designations as $designation)
-                                    <option value="{{ $designation['id'] }}">{{ $designation['designation'] }}</option>
-                                    @endforeach
-                                </select>
-                                @if ($errors->has('designation_id'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('designation_id') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                            <!-- /.form-group -->
-
                             <label for="joining_position">{{ __(' Department') }} <span
                                     class="text-danger">*</span></label>
                             <div
@@ -305,6 +296,8 @@
                                 @endif
                             </div>
                             <!-- /.form-group -->
+                        </div>
+                        <div class="col-md-3">
 
                             <label for="marital_status">{{ __(' Marital Status') }} </label>
                             <div
@@ -354,9 +347,32 @@
                                 @endif
                             </div>
                             <!-- /.form-group -->
+
+                            <label for="reference">{{ __(' Reference') }}</label>
+                            <div class="form-group{{ $errors->has('reference') ? ' has-error' : '' }} has-feedback">
+                                <input name="reference" id="reference" class="form-control" value="{{ $employee['reference'] }}" placeholder="Reference">
+                                @if ($errors->has('reference'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('reference') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                            <!-- /.form-group -->
+
+                            <label for="web">{{ __(' Web') }}</label>
+                            <div class="form-group{{ $errors->has('web') ? ' has-error' : '' }} has-feedback">
+                                <input type="text" name="web" id="web" class="form-control" value="{{ $employee['web'] }}">
+                                @if ($errors->has('web'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('web') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                            <!-- /.form-group -->
                         </div>
+                        <div class="row"><div class="col-md-12">
                         <!-- /.col -->
-                        <div class="col-md-12">
+                        <div class="col-md-4">
                             <label for="academic_qualification">{{ __(' Academic Qualification') }}</label>
                             <div
                                 class="form-group{{ $errors->has('academic_qualification') ? ' has-error' : '' }} has-feedback">
@@ -369,7 +385,9 @@
                                 @endif
                             </div>
                             <!-- /.form-group -->
+                        </div>
 
+                        <div class="col-md-4">
                             <label for="professional_qualification">{{ __(' Professional Qualification') }}</label>
                             <div
                                 class="form-group{{ $errors->has('professional_qualification') ? ' has-error' : '' }} has-feedback">
@@ -382,7 +400,9 @@
                                 @endif
                             </div>
                             <!-- /.form-group -->
+                        </div>
 
+                        <div class="col-md-4">
                             <label for="experience">{{ __(' Experience') }}</label>
                             <div class="form-group{{ $errors->has('experience') ? ' has-error' : '' }} has-feedback">
                                 <textarea name="experience" id="experience"
@@ -394,19 +414,8 @@
                                 @endif
                             </div>
                             <!-- /.form-group -->
-
-                            <label for="reference">{{ __(' Reference') }}</label>
-                            <div class="form-group{{ $errors->has('reference') ? ' has-error' : '' }} has-feedback">
-                                <textarea name="reference" id="reference"
-                                    class="form-control textarea">{{ $employee['reference'] }}</textarea>
-                                @if ($errors->has('reference'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('reference') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                            <!-- /.form-group -->
                         </div>
+                    </div></div>
                         <!-- /.row -->
                     </div>
                     <!-- /.box-body -->

@@ -38,39 +38,30 @@
         </a>
         <ul class="treeview-menu">
             <?php if (\Entrust::can('manage-salary')) : ?>
-            <li><a href="<?php echo e(url('/hrm/payroll')); ?>"><i class="fa fa-circle-o"></i> <?php echo e(__('Manage Salary')); ?></a>
-            </li>
+            <li><a href="<?php echo e(url('/hrm/payroll')); ?>"><i class="fa fa-circle-o"></i> <?php echo e(__('Manage Salary')); ?></a></li>
             <?php endif; // Entrust::can ?>
             <?php if (\Entrust::can('salary-list')) : ?>
-            <li><a href="<?php echo e(url('/hrm/payroll/salary-list')); ?>"><i class="fa fa-circle-o"></i>
-                    <?php echo e(__('Salary List')); ?></a></li>
+            <li><a href="<?php echo e(url('/hrm/payroll/salary-list')); ?>"><i class="fa fa-circle-o"></i><?php echo e(__('Salary List')); ?></a></li>
             <?php endif; // Entrust::can ?>
-
             <li><a href="<?php echo e(url('/hrm/payroll/increment/search')); ?>"><i class="fa fa-circle-o"></i><?php echo e(__(' New Increment')); ?></a></li>
-            <li><a href="<?php echo e(url('/hrm/payroll/increment/list')); ?>"><i class="fa fa-circle-o"></i>
-                    <?php echo e(__('Increment List')); ?></a></li>
-
+            <li><a href="<?php echo e(url('/hrm/payroll/increment/list')); ?>"><i class="fa fa-circle-o"></i><?php echo e(__('Increment List')); ?></a></li>
             <?php if (\Entrust::can('make-payment')) : ?>
-            <!--<li><a href="<?php echo e(url('/hrm/salary-payments')); ?>"><i class="fa fa-circle-o"></i><?php echo e(__(' Make Payment')); ?></a>
-            </li>-->
+            
             <?php endif; // Entrust::can ?>
             <?php if (\Entrust::can('generate-payslip')) : ?>
-            <li><a href="<?php echo e(url('/hrm/generate-payslips/')); ?>"><i class="fa fa-circle-o"></i>
-                    <?php echo e(__(' Generate Payslip')); ?></a></li>
+            <li><a href="<?php echo e(url('/hrm/generate-payslips/')); ?>"><i class="fa fa-circle-o"></i><?php echo e(__(' Generate Payslip')); ?></a></li>
             <?php endif; // Entrust::can ?>
             <?php if (\Entrust::can('manage-bonus')) : ?>
             <li><a href="<?php echo e(url('/hrm/bonuses')); ?>"><i class="fa fa-circle-o"></i> <?php echo e(__('Manage Bonus')); ?></a></li>
             <?php endif; // Entrust::can ?>
             <?php if (\Entrust::can('manage-deduction')) : ?>
-            <li><a href="<?php echo e(url('/hrm/deductions')); ?>"><i class="fa fa-circle-o"></i>
-                    <?php echo e(__('Manage Deduction')); ?></a></li>
+            <li><a href="<?php echo e(url('/hrm/deductions')); ?>"><i class="fa fa-circle-o"></i><?php echo e(__('Manage Deduction')); ?></a></li>
             <?php endif; // Entrust::can ?>
             <?php if (\Entrust::can('loan-management')) : ?>
-            <li><a href="<?php echo e(url('/hrm/loans')); ?>"><i class="fa fa-circle-o"></i><?php echo e(__(' Loan Management')); ?></a>
-            </li>
+            <li><a href="<?php echo e(url('/hrm/loans')); ?>"><i class="fa fa-circle-o"></i><?php echo e(__(' Loan Management')); ?></a></li>
             <?php endif; // Entrust::can ?>
             <?php if (\Entrust::can('provident-fund')) : ?>
-            <li><a href="<?php echo e(url('/hrm/provident-funds')); ?>"><i class="fa fa-circle-o"></i><?php echo e(__(' Provident Fund')); ?></a></li>
+            
             <?php endif; // Entrust::can ?>
         </ul>
     </li>

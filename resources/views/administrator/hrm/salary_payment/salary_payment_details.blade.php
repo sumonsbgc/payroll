@@ -29,10 +29,9 @@
             </div>
           </div>
           <div class="box-body">
-            <a href="{{ url('/hrm/salary-payments') }}" class="btn btn-primary btn-flat"><i class="fa fa-arrow-left"></i> {{ __('Back') }}</a>
-
-            <button type="button" class="btn btn-primary btn-flat" title="Print" data-original-title="Label Printer" onclick="printDiv('printable_area')"><i class="fa fa-print"></i><span class="hidden-sm hidden-xs"> {{ __('Print') }} </span></button>
-           
+            
+            <a href="{{ url()->previous() }}" class="btn btn-primary btn-flat"><i class="fa fa-arrow-left"></i> {{ __('Back') }}</a>
+            <button type="button" class="btn btn-primary btn-flat" title="Print" data-original-title="Label Printer" onclick="printDiv('printable_area')"><i class="fa fa-print"></i><span class="hidden-sm hidden-xs"> {{ __('Print') }} </span></button>           
             <hr>
             <div id="printable_area" class="table-responsive">
               <table class="table table-bordered">

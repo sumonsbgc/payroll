@@ -66,7 +66,6 @@
         <!-- /.box -->
       </div>
       <!-- /.end.col -->
-
       <div class="col-md-3">
         <div class="box box-danger">
           <div class="box-header with-border">
@@ -106,16 +105,7 @@
                 <input type="number" value="" class="form-control" id="net_salary" disabled>
                 <input type="hidden" name="net_salary" id="net_salary_1">
               </div>
-              <!-- / .end form group -->
 
-              @php($provident_fund = $salary['provident_fund_contribution'] + $salary['provident_fund_deduction'])
-
-              <div class="form-group">
-                <label for="net_salary">{{ __('Provident Fund') }}</label>
-                <input type="number" value="{{ $provident_fund }}" class="form-control" disabled>
-                <input type="hidden" name="provident_fund" value="{{ $provident_fund }}">
-              </div>
-              <!-- / .end form group -->
 
               <div class="form-group{{ $errors->has('payment_amount') ? ' has-error' : '' }}">
                 <label for="payment_amount">{{ __('Payment Amount') }}</label>
@@ -132,10 +122,10 @@
               <div class="form-group{{ $errors->has('payment_type') ? ' has-error' : '' }}">
                 <label for="payment_type">{{ __('Payment Type') }}</label>
                 <select name="payment_type" id="payment_type" class="form-control">
-                  <option selected disabled>{{ __('Select One') }}</option>
-                  <option value="1">{{ __('Cash Payment') }}</option>
-                  <option value="2">{{ __('Chaque Payment') }}</option>
-                  <option value="3">{{ __('Bank Payment') }}</option>
+                    <option selected disabled>{{ __('Select One') }}</option>
+                  @foreach (getPaymentType() as $key => $type)
+                    <option value="{{ $key }}">{{ __($type) }}</option>                      
+                  @endforeach
                 </select>
                 @if ($errors->has('payment_type'))
                 <span class="help-block">
@@ -156,10 +146,7 @@
                 @endif
               </div>
               <!-- / .end form group -->
-
-              <button id="btnTest" type="submit"
-                class="btn btn-danger btn-flat btn-block">{{ __('Make Payment') }}</button>
-
+              <button id="btnTest" type="submit" class="btn btn-danger btn-flat btn-block">{{ __('Make Payment') }}</button>
           </div>
           <!-- /.box-body -->
         </div>
@@ -180,15 +167,17 @@
                 <th>{{ __('Debits') }}</th>
                 <th>{{ __('Credits') }}</th>
               </tr>
-              @php($sl = 1)
-              @php($debits = 0)
-              @php($credits = 0)
+              <?php 
+                $sl = 1;
+                $debits = 0;
+                $credits = 0;
+              ?>
               <tr>
                 <td>{{ $sl++ }}</td>
                 <td>{{ __('Basic Salary') }}</td>
                 <td></td>
                 <td>
-                  @php($credits += $salary['basic_salary'])
+                  <?php $credits += $salary['basic_salary']; ?>
                   {{ $salary['basic_salary'] }}
                   <input type="hidden" name="item_name[]" value="Basic Salary">
                   <input type="hidden" name="amount[]" value="{{ $salary['basic_salary'] }}">
@@ -196,132 +185,13 @@
                 </td>
               </tr>
 
-              @if(!empty($salary['house_rent_allowance']))
-              <tr>
-                <td>{{ $sl++ }}</td>
-                <td>{{ __('House Rent Allowance') }}</td>
-                <td></td>
-                <td>
-                  @php($credits += $salary['house_rent_allowance'])
-                  {{ $salary['house_rent_allowance'] }}
-                  <input type="hidden" name="item_name[]" value="House Rent Allowance">
-                  <input type="hidden" name="amount[]" value="{{ $salary['house_rent_allowance'] }}">
-                  <input type="hidden" name="status[]" value="credits">
-                </td>
-              </tr>
-              @endif
-
-              @if(!empty($salary['medical_allowance']))
-              <tr>
-                <td>{{ $sl++ }}</td>
-                <td>{{ __('Medical Allowance') }}</td>
-                <td></td>
-                <td>
-                  @php($credits += $salary['medical_allowance'])
-                  {{ $salary['medical_allowance'] }}
-                  <input type="hidden" name="item_name[]" value="Medical Allowance">
-                  <input type="hidden" name="amount[]" value="{{ $salary['medical_allowance'] }}">
-                  <input type="hidden" name="status[]" value="credits">
-                </td>
-              </tr>
-              @endif
-
-              @if(!empty($salary['special_allowance']))
-              <tr>
-                <td>{{ $sl++ }}</td>
-                <td>{{ __('Special Allowance</td>
-              <td></td>') }}
-                <td>
-                  @php($credits += $salary['special_allowance'])
-                  {{ $salary['special_allowance'] }}
-                  <input type="hidden" name="item_name[]" value="Special Allowance">
-                  <input type="hidden" name="amount[]" value="{{ $salary['special_allowance'] }}">
-                  <input type="hidden" name="status[]" value="credits">
-                </td>
-              </tr>
-              @endif
-
-              @if(!empty($salary['provident_fund_contribution']))
-              <tr>
-                <td>{{ $sl++ }}</td>
-                <td>{{ __('Provident Fund Contribution') }}</td>
-                <td></td>
-                <td>
-                  {{ $salary['provident_fund_contribution'] }}
-                  <input type="hidden" name="item_name[]" value="Provident Fund Contribution">
-                  <input type="hidden" name="amount[]" value="{{ $salary['provident_fund_contribution'] }}">
-                  <input type="hidden" name="status[]" value="credits">
-                </td>
-              </tr>
-              @endif
-
-              @if(!empty($salary['other_allowance']))
-              <tr>
-                <td>{{ $sl++ }}</td>
-                <td>{{ __('Other Allowance') }}</td>
-                <td></td>
-                <td>
-                  @php($credits += $salary['other_allowance'])
-                  {{ $salary['other_allowance'] }}
-                  <input type="hidden" name="item_name[]" value="Other Allowance">
-                  <input type="hidden" name="amount[]" value="{{ $salary['other_allowance'] }}">
-                  <input type="hidden" name="status[]" value="credits">
-                </td>
-              </tr>
-              @endif
-
-              @if(!empty($salary['tax_deduction']))
-              <tr>
-                <td>{{ $sl++ }}</td>
-                <td>{{ __('Tax Deduction') }}</td>
-                <td>
-                  @php($debits += $salary['tax_deduction'])
-                  -{{ $salary['tax_deduction'] }}
-                  <input type="hidden" name="item_name[]" value="Tax Deduction">
-                  <input type="hidden" name="amount[]" value="{{ $salary['tax_deduction'] }}">
-                  <input type="hidden" name="status[]" value="debits">
-                </td>
-                <td></td>
-              </tr>
-              @endif
-
-              @if(!empty($salary['provident_fund_deduction']))
-              <tr>
-                <td>{{ $sl++ }}</td>
-                <td>{{ __('Provident Fund Deduction') }}</td>
-                <td>
-                  @php($debits += $salary['provident_fund_deduction'])
-                  -{{ $salary['provident_fund_deduction'] }}
-                  <input type="hidden" name="item_name[]" value="Provident Fund Deduction">
-                  <input type="hidden" name="amount[]" value="{{ $salary['provident_fund_deduction'] }}">
-                  <input type="hidden" name="status[]" value="debits">
-                </td>
-                <td></td>
-              </tr>
-              @endif
-
-              @if(!empty($salary['other_deduction']))
-              <tr>
-                <td>{{ $sl++ }}</td>
-                <td>{{ __('Other Deductio') }}n</td>
-                <td>
-                  @php($debits += $salary['other_deduction'])
-                  -{{ $salary['other_deduction'] }}
-                  <input type="hidden" name="item_name[]" value="Other Deduction">
-                  <input type="hidden" name="amount[]" value="{{ $salary['other_deduction'] }}">
-                  <input type="hidden" name="status[]" value="debits">
-                </td>
-                <td></td>
-              </tr>
-              @endif
-
               @foreach($bonuses as $bonus)
               <tr>
                 <td>{{ $sl++ }}</td>
                 <td>{{ $bonus['bonus_name'] }}</td>
                 <td></td>
                 <td>
-                  @php($credits += $bonus['bonus_amount'])
+                  <?php $credits += $bonus['bonus_amount']; ?>
                   {{ $bonus['bonus_amount'] }}
                   <input type="hidden" name="item_name[]" value="{{ $bonus['bonus_name'] }}">
                   <input type="hidden" name="amount[]" value="{{ $bonus['bonus_amount'] }}">
@@ -335,7 +205,7 @@
                 <td>{{ $sl++ }}</td>
                 <td>{{ $deduction['deduction_name'] }}</td>
                 <td>
-                  @php($debits += $deduction['deduction_amount'])
+                  <?php $debits += $deduction['deduction_amount']; ?>
                   -{{ $deduction['deduction_amount'] }}
                   <input type="hidden" name="item_name[]" value="{{ $deduction['deduction_name'] }}">
                   <input type="hidden" name="amount[]" value="{{ $deduction['deduction_amount'] }}">
@@ -350,8 +220,10 @@
                 <td>{{ $sl++ }}</td>
                 <td>{{ $loan['loan_name'] }}</td>
                 <td>
-                  @php($installment = $loan['loan_amount'] / $loan['number_of_installments'])
-                  @php($debits += $installment)
+                  <?php 
+                    $installment = $loan['loan_amount'] / $loan['number_of_installments']; 
+                    $debits += $installment; 
+                  ?>
                   -{{ number_format($installment, 2, '.', ',') }}
                   <input type="hidden" name="item_name[]" value="{{ $loan['loan_name'] }}">
                   <input type="hidden" name="amount[]" value="{{ $installment }}">

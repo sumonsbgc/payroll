@@ -67,7 +67,6 @@
         <!-- /.box -->
       </div>
       <!-- /.end.col -->
-
       <div class="col-md-3">
         <div class="box box-danger">
           <div class="box-header with-border">
@@ -108,16 +107,7 @@
                 <input type="number" value="" class="form-control" id="net_salary" disabled>
                 <input type="hidden" name="net_salary" id="net_salary_1">
               </div>
-              <!-- / .end form group -->
 
-              <?php ($provident_fund = $salary['provident_fund_contribution'] + $salary['provident_fund_deduction']); ?>
-
-              <div class="form-group">
-                <label for="net_salary"><?php echo e(__('Provident Fund')); ?></label>
-                <input type="number" value="<?php echo e($provident_fund); ?>" class="form-control" disabled>
-                <input type="hidden" name="provident_fund" value="<?php echo e($provident_fund); ?>">
-              </div>
-              <!-- / .end form group -->
 
               <div class="form-group<?php echo e($errors->has('payment_amount') ? ' has-error' : ''); ?>">
                 <label for="payment_amount"><?php echo e(__('Payment Amount')); ?></label>
@@ -134,10 +124,10 @@
               <div class="form-group<?php echo e($errors->has('payment_type') ? ' has-error' : ''); ?>">
                 <label for="payment_type"><?php echo e(__('Payment Type')); ?></label>
                 <select name="payment_type" id="payment_type" class="form-control">
-                  <option selected disabled><?php echo e(__('Select One')); ?></option>
-                  <option value="1"><?php echo e(__('Cash Payment')); ?></option>
-                  <option value="2"><?php echo e(__('Chaque Payment')); ?></option>
-                  <option value="3"><?php echo e(__('Bank Payment')); ?></option>
+                    <option selected disabled><?php echo e(__('Select One')); ?></option>
+                  <?php $__currentLoopData = getPaymentType(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <option value="<?php echo e($key); ?>"><?php echo e(__($type)); ?></option>                      
+                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
                 <?php if($errors->has('payment_type')): ?>
                 <span class="help-block">
@@ -158,10 +148,7 @@
                 <?php endif; ?>
               </div>
               <!-- / .end form group -->
-
-              <button id="btnTest" type="submit"
-                class="btn btn-danger btn-flat btn-block"><?php echo e(__('Make Payment')); ?></button>
-
+              <button id="btnTest" type="submit" class="btn btn-danger btn-flat btn-block"><?php echo e(__('Make Payment')); ?></button>
           </div>
           <!-- /.box-body -->
         </div>
@@ -183,15 +170,17 @@
                 <th><?php echo e(__('Debits')); ?></th>
                 <th><?php echo e(__('Credits')); ?></th>
               </tr>
-              <?php ($sl = 1); ?>
-              <?php ($debits = 0); ?>
-              <?php ($credits = 0); ?>
+              <?php 
+                $sl = 1;
+                $debits = 0;
+                $credits = 0;
+              ?>
               <tr>
                 <td><?php echo e($sl++); ?></td>
                 <td><?php echo e(__('Basic Salary')); ?></td>
                 <td></td>
                 <td>
-                  <?php ($credits += $salary['basic_salary']); ?>
+                  <?php $credits += $salary['basic_salary']; ?>
                   <?php echo e($salary['basic_salary']); ?>
 
                   <input type="hidden" name="item_name[]" value="Basic Salary">
@@ -200,141 +189,13 @@
                 </td>
               </tr>
 
-              <?php if(!empty($salary['house_rent_allowance'])): ?>
-              <tr>
-                <td><?php echo e($sl++); ?></td>
-                <td><?php echo e(__('House Rent Allowance')); ?></td>
-                <td></td>
-                <td>
-                  <?php ($credits += $salary['house_rent_allowance']); ?>
-                  <?php echo e($salary['house_rent_allowance']); ?>
-
-                  <input type="hidden" name="item_name[]" value="House Rent Allowance">
-                  <input type="hidden" name="amount[]" value="<?php echo e($salary['house_rent_allowance']); ?>">
-                  <input type="hidden" name="status[]" value="credits">
-                </td>
-              </tr>
-              <?php endif; ?>
-
-              <?php if(!empty($salary['medical_allowance'])): ?>
-              <tr>
-                <td><?php echo e($sl++); ?></td>
-                <td><?php echo e(__('Medical Allowance')); ?></td>
-                <td></td>
-                <td>
-                  <?php ($credits += $salary['medical_allowance']); ?>
-                  <?php echo e($salary['medical_allowance']); ?>
-
-                  <input type="hidden" name="item_name[]" value="Medical Allowance">
-                  <input type="hidden" name="amount[]" value="<?php echo e($salary['medical_allowance']); ?>">
-                  <input type="hidden" name="status[]" value="credits">
-                </td>
-              </tr>
-              <?php endif; ?>
-
-              <?php if(!empty($salary['special_allowance'])): ?>
-              <tr>
-                <td><?php echo e($sl++); ?></td>
-                <td><?php echo e(__('Special Allowance</td>
-              <td></td>')); ?>
-
-                <td>
-                  <?php ($credits += $salary['special_allowance']); ?>
-                  <?php echo e($salary['special_allowance']); ?>
-
-                  <input type="hidden" name="item_name[]" value="Special Allowance">
-                  <input type="hidden" name="amount[]" value="<?php echo e($salary['special_allowance']); ?>">
-                  <input type="hidden" name="status[]" value="credits">
-                </td>
-              </tr>
-              <?php endif; ?>
-
-              <?php if(!empty($salary['provident_fund_contribution'])): ?>
-              <tr>
-                <td><?php echo e($sl++); ?></td>
-                <td><?php echo e(__('Provident Fund Contribution')); ?></td>
-                <td></td>
-                <td>
-                  <?php echo e($salary['provident_fund_contribution']); ?>
-
-                  <input type="hidden" name="item_name[]" value="Provident Fund Contribution">
-                  <input type="hidden" name="amount[]" value="<?php echo e($salary['provident_fund_contribution']); ?>">
-                  <input type="hidden" name="status[]" value="credits">
-                </td>
-              </tr>
-              <?php endif; ?>
-
-              <?php if(!empty($salary['other_allowance'])): ?>
-              <tr>
-                <td><?php echo e($sl++); ?></td>
-                <td><?php echo e(__('Other Allowance')); ?></td>
-                <td></td>
-                <td>
-                  <?php ($credits += $salary['other_allowance']); ?>
-                  <?php echo e($salary['other_allowance']); ?>
-
-                  <input type="hidden" name="item_name[]" value="Other Allowance">
-                  <input type="hidden" name="amount[]" value="<?php echo e($salary['other_allowance']); ?>">
-                  <input type="hidden" name="status[]" value="credits">
-                </td>
-              </tr>
-              <?php endif; ?>
-
-              <?php if(!empty($salary['tax_deduction'])): ?>
-              <tr>
-                <td><?php echo e($sl++); ?></td>
-                <td><?php echo e(__('Tax Deduction')); ?></td>
-                <td>
-                  <?php ($debits += $salary['tax_deduction']); ?>
-                  -<?php echo e($salary['tax_deduction']); ?>
-
-                  <input type="hidden" name="item_name[]" value="Tax Deduction">
-                  <input type="hidden" name="amount[]" value="<?php echo e($salary['tax_deduction']); ?>">
-                  <input type="hidden" name="status[]" value="debits">
-                </td>
-                <td></td>
-              </tr>
-              <?php endif; ?>
-
-              <?php if(!empty($salary['provident_fund_deduction'])): ?>
-              <tr>
-                <td><?php echo e($sl++); ?></td>
-                <td><?php echo e(__('Provident Fund Deduction')); ?></td>
-                <td>
-                  <?php ($debits += $salary['provident_fund_deduction']); ?>
-                  -<?php echo e($salary['provident_fund_deduction']); ?>
-
-                  <input type="hidden" name="item_name[]" value="Provident Fund Deduction">
-                  <input type="hidden" name="amount[]" value="<?php echo e($salary['provident_fund_deduction']); ?>">
-                  <input type="hidden" name="status[]" value="debits">
-                </td>
-                <td></td>
-              </tr>
-              <?php endif; ?>
-
-              <?php if(!empty($salary['other_deduction'])): ?>
-              <tr>
-                <td><?php echo e($sl++); ?></td>
-                <td><?php echo e(__('Other Deductio')); ?>n</td>
-                <td>
-                  <?php ($debits += $salary['other_deduction']); ?>
-                  -<?php echo e($salary['other_deduction']); ?>
-
-                  <input type="hidden" name="item_name[]" value="Other Deduction">
-                  <input type="hidden" name="amount[]" value="<?php echo e($salary['other_deduction']); ?>">
-                  <input type="hidden" name="status[]" value="debits">
-                </td>
-                <td></td>
-              </tr>
-              <?php endif; ?>
-
               <?php $__currentLoopData = $bonuses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bonus): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
               <tr>
                 <td><?php echo e($sl++); ?></td>
                 <td><?php echo e($bonus['bonus_name']); ?></td>
                 <td></td>
                 <td>
-                  <?php ($credits += $bonus['bonus_amount']); ?>
+                  <?php $credits += $bonus['bonus_amount']; ?>
                   <?php echo e($bonus['bonus_amount']); ?>
 
                   <input type="hidden" name="item_name[]" value="<?php echo e($bonus['bonus_name']); ?>">
@@ -349,7 +210,7 @@
                 <td><?php echo e($sl++); ?></td>
                 <td><?php echo e($deduction['deduction_name']); ?></td>
                 <td>
-                  <?php ($debits += $deduction['deduction_amount']); ?>
+                  <?php $debits += $deduction['deduction_amount']; ?>
                   -<?php echo e($deduction['deduction_amount']); ?>
 
                   <input type="hidden" name="item_name[]" value="<?php echo e($deduction['deduction_name']); ?>">
@@ -365,8 +226,10 @@
                 <td><?php echo e($sl++); ?></td>
                 <td><?php echo e($loan['loan_name']); ?></td>
                 <td>
-                  <?php ($installment = $loan['loan_amount'] / $loan['number_of_installments']); ?>
-                  <?php ($debits += $installment); ?>
+                  <?php 
+                    $installment = $loan['loan_amount'] / $loan['number_of_installments']; 
+                    $debits += $installment; 
+                  ?>
                   -<?php echo e(number_format($installment, 2, '.', ',')); ?>
 
                   <input type="hidden" name="item_name[]" value="<?php echo e($loan['loan_name']); ?>">

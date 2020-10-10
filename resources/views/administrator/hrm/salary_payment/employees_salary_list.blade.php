@@ -18,7 +18,6 @@
   <!-- Main content -->
   <section class="content">
     <div class="row">
-
       <div class="col-md-12">
         <div class="box box-primary">
           <div class="box-header with-border">
@@ -111,65 +110,67 @@
                   <th>{{ __('Gross Salary') }}</th>
                   <th>{{ __('Total Deduction') }}</th>
                   <th>{{ __('Net Salary') }}</th>
-                  <th>{{ __('Provident Fund') }}</th>
                   <th>{{ __('Payment Status') }}</th>
                 </tr>
-                @php($sl = 1)
+                <?php $sl = 1 ?>
                 @foreach($employees as $employee)
                 <tr>
                   <td>{{ $sl++ }}</td>
                   <td>{{ $employee['name'] }}</td>
                   <td>{{ $employee['designation'] }}</td>
                   <td>{{ date("F Y", strtotime($salary_month)) }}</td>
-                  @php($debits = 0)
-                  @php($credits = 0)
-
-                  @php($credits += ($employee['basic_salary'] + $employee['house_rent_allowance'] + $employee['medical_allowance'] + $employee['special_allowance'] + $employee['other_allowance']))
-                  @php($debits += $employee['tax_deduction'] + $employee['provident_fund_deduction'] + $employee['other_deduction'])
+                  <?php 
+                    $debits  = 0;
+                    $credits = 0;
+                    $credits += ($employee['basic_salary'] + $employee['house_rent_allowance'] + $employee['medical_allowance'] + $employee['special_allowance'] + $employee['other_allowance']);
+                    $debits  += $employee['tax_deduction'] + $employee['provident_fund_deduction'] + $employee['other_deduction'];
+                  ?>
 
                   @foreach($bonuses as $bonus)
-                  @if($employee['user_id'] == $bonus['user_id'])
-                  @php($credits += $bonus['bonus_amount'])
-                  @endif
+                    @if($employee['user_id'] == $bonus['user_id'])
+                      <?php $credits += $bonus['bonus_amount']; ?>
+                    @endif
                   @endforeach
 
                   @foreach($deductions as $deduction)
-                  @if($employee['user_id'] == $deduction['user_id'])
-                  @php($debits += $deduction['deduction_amount'])
-                  @endif
+                    @if($employee['user_id'] == $deduction['user_id'])
+                      <?php $debits += $deduction['deduction_amount']; ?>
+                    @endif
                   @endforeach
 
                   @foreach($loans as $loan)
-                  @if($employee['user_id'] == $loan['user_id'])
-                  @php($installment = $loan['loan_amount'] / $loan['remaining_installments'])
-                  @php($debits += $installment)
-                  @endif
+                    @if($employee['user_id'] == $loan['user_id'])
+                      <?php 
+                        $installment = $loan['loan_amount'] / $loan['remaining_installments']; 
+                        $debits += $installment
+                      ?>
+                    @endif
                   @endforeach
-
                   <td>{{ number_format($credits, 2, '.', ',') }}</td>
                   <td>{{ number_format($debits, 2, '.', ',') }}</td>
                   <td>{{ number_format($credits - $debits, 2, '.', ',') }}</td>
-                  <td>{{ number_format($employee['provident_fund_contribution'] + $employee['provident_fund_deduction'], 2, '.', ',') }}</td>
-
                   <td>
                     @if(!empty($salary_payments))
-                    @php($status = 0)
-                    @foreach($salary_payments as $salary_payment)
-                    @if($salary_payment['user_id'] == $employee['user_id'])
-                    @php($status = 1)
-                    @endif
-                    @endforeach
-                    @if($status == 1)
-                    <p class="text-success">{{ __('Paid') }}</p>
+                      <?php $status = 0 ?>
+                      @foreach($salary_payments as $salary_payment)
+                        @if($salary_payment['user_id'] == $employee['user_id'])
+                        <?php $status = 1; ?>
+                        @endif
+                      @endforeach
+                      @if($status == 1)
+                      <p class="text-success">
+                          {{ __('Paid') }} &nbsp;&nbsp;&nbsp;&nbsp;
+                          <a class="btn btn-primary btn-flat" href="{{ route('employee.salary.details', [$employee['user_id'], $salary_month]) }}">Details <i class="fa fa-arrow-right"></i></a></td>
+                      </p>
+                      @else
+                      <a href="{{ url('hrm/salary-payments/manage-salary/' . $employee['user_id'] . '/' . $salary_month) }}">
+                        <p class="text-danger">{{ __('Make payment') }}</p>
+                      </a>
+                      @endif
                     @else
-                    <a href="{{ url('hrm/salary-payments/manage-salary/' . $employee['user_id'] . '/' . $salary_month) }}">
-                      <p class="text-danger">{{ __('Make payment') }}</p>
-                    </a>
-                    @endif
-                    @else
-                    <a href="{{ url('hrm/salary-payments/manage-salary/' . $employee['user_id'] . '/' . $salary_month) }}">
-                      <p class="text-danger">{{ __('Make payment') }}</p>
-                    </a>
+                      <a href="{{ url('hrm/salary-payments/manage-salary/' . $employee['user_id'] . '/' . $salary_month) }}">
+                        <p class="text-danger">{{ __('Make payment') }}</p>
+                      </a>
                     @endif
                   </td>
                 </tr>

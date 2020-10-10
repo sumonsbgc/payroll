@@ -67,16 +67,14 @@
                             <th>{{ __('SL#') }}</th>
                             <th>{{ __('Employee Name') }}</th>
                             <th>{{ __('Designation') }}</th>
-                            <th  class="text-center">{{ __('Attendance') }}</th>
+                            <th class="text-center">{{ __('Attendance') }}</th>
                             <th>{{ __('Leave Category') }}</th>
                             <th>{{ __('In Time') }}</th>
                             <th>{{ __('Out Time') }}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @php
-                            $sl = 1
-                        @endphp
+                    <?php $sl = 1 ?>
                         @foreach($employees as $employee)
                         <tr>
                             <td>{{ $sl++ }}</td>
@@ -86,6 +84,7 @@
                                 <input type="hidden" name="attendance_date[]" value="{{ $date }}">
                             </td>
                             <td>{{ $employee['designation'] }}</td>
+                            
                             @foreach($attendances as $attendance)
                             @if($employee['id'] == $attendance['user_id'])
                             <input type="hidden" name="attendance_id[]" value="{{ $attendance['id'] }}">
@@ -93,7 +92,6 @@
                                 <div class="form-group">
                                     <div class="checkbox">
                                         <label>
-
                                             @if($attendance['attendance_status'] == 1)
                                                 <input type="hidden" name="attendance_status[]" value="1"><input checked type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value">
                                             @else

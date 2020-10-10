@@ -1,12 +1,15 @@
-<?php 
+<?php
 
 namespace App\Services;
 
 use App\User;
 use App\Attendance;
+use App\LeaveApplication;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
-class Attendence{
+class Attendence
+{
 
     private $curl;
 
@@ -49,30 +52,34 @@ class Attendence{
         return $results;
     }
 
-    public function getUsers(){
+    public function getUsers()
+    {
         $results = $this->logs();
         $users = array_column($results->log, 'registration_id');
         $users = array_unique($users, SORT_STRING);
         return Arr::sort($users);
     }
 
-    public function getCheckInTime(){        
+    public function getCheckInTime()
+    {
+        $today = date('Y-m-d');
         $schedule = [
-            "start_date" => "2020-10-02",
-            "end_date"   => "2020-10-02",
+            "start_date" => $today,
+            "end_date"   => $today,
             "start_time" => "05: 00: 00",
             "end_time"   => "23: 59: 00"
         ];
-
         $results = $this->logs($schedule);
         $checkin = array_column(array_reverse($results->log), 'access_time', 'registration_id');
         return $checkin;
     }
 
-    public function getCheckOutTime(){
+    public function getCheckOutTime()
+    {
+        $today = date('Y-m-d');
         $schedule = [
-            "start_date" => "2020-10-02",
-            "end_date"   => "2020-10-02",
+            "start_date" => $today,
+            "end_date"   => $today,
             "start_time" => "05: 00: 00",
             "end_time"   => "23: 59: 00"
         ];
@@ -83,17 +90,36 @@ class Attendence{
     }
 
     // For Cron Job
-    public function setAttendence(){
+    public function setAttendence()
+    {
+        if(date('l') !== 'Friday'){}
+
         $checkin = $this->getCheckInTime();
         if (!empty($checkin)) {
-
-        $checkout = $this->getCheckOutTime();
-        $employees = User::where('role', 'employee')->get(['id', 'fingerprint_user_id']);
-
-        $date = date('Y-m-d');
+            $checkout = $this->getCheckOutTime();
+            $employees = User::where('role', '2')->get(['id', 'fingerprint_user_id']);
+            $date = date('Y-m-d');
 
             foreach ($employees as $emp) {
-                $attendance_status = isset($checkin[$emp->fingerprint_user_id]) || isset($checkout[$emp->fingerprint_user_id]) ? 1 : 0;                
+                $attendance_status = isset($checkin[$emp->fingerprint_user_id]) || isset($checkout[$emp->fingerprint_user_id]) ? 1 : 0;
+
+                if($attendance_status !== 1){
+                    $leave = LeaveApplication::where('created_by', $emp->id)
+                    ->where('publication_status', 1)
+                    ->whereDate('start_date', '<=', $date)
+                    ->whereDate('end_date', '>=', $date)
+                    ->first();
+                    
+                    if(!empty($leave) && !is_null($leave->leave_category_id ?? null) ){
+                        $leave_status = $leave->leave_category_id;
+                    }else{
+                        $leave_status = 0;
+                    }
+
+                }else{
+                    $leave_status = 0;
+                }
+
                 Attendance::updateOrCreate(
                     [
                         'attendance_date' => $date,
@@ -104,13 +130,13 @@ class Attendence{
                         'user_id' => $emp->id,
                         'attendance_date' => $date,
                         'attendance_status' => $attendance_status,
-                        'leave_category_id' => $attendance_status == 0 ? 0 : 1,
+                        'leave_category_id' => $leave_status,
                         'check_in' => isset($checkin[$emp->fingerprint_user_id]) ? $checkin[$emp->fingerprint_user_id] : null,
                         'check_out' => isset($checkout[$emp->fingerprint_user_id]) ? $checkout[$emp->fingerprint_user_id] : null,
                     ]
                 );
             }
         }
-    }
 
+    }
 }

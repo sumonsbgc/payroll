@@ -143,7 +143,7 @@
                             </div>
 
                             <label for="password"><?php echo e(__('Password')); ?> <span class="text-danger">*</span></label>
-                            <div class="form-group<?php echo e($errors->has('name') ? ' has-error' : ''); ?> has-feedback">
+                            <div class="form-group<?php echo e($errors->has('password') ? ' has-error' : ''); ?> has-feedback">
                                 <input type="text" name="password" id="password" class="form-control" value="<?php echo e(old('password')); ?>" placeholder="<?php echo e(__('Password..')); ?>">
                                 <?php if($errors->has('password')): ?>
                                 <span class="help-block">
@@ -225,8 +225,16 @@
                             </div>
                             <!-- /.form-group -->
 
-                            <input type="hidden" name="home_district" value="None">
-
+                            <label for="home_district"><?php echo e(__(' Home District')); ?></label>
+                            <div class="form-group<?php echo e($errors->has('home_district') ? ' has-error' : ''); ?> has-feedback">
+                                <input type="text" name="home_district" id="home_district" class="form-control" value="<?php echo e(old('home_district')); ?>">
+                                <?php if($errors->has('home_district')): ?>
+                                <span class="help-block">
+                                    <strong><?php echo e($errors->first('home_district')); ?></strong>
+                                </span>
+                                <?php endif; ?>
+                            </div>
+                            <!-- /.form-group -->
                             <!-- /.form-group -->
 
                             <label for="id_name"><?php echo e(__('ID Name')); ?></label>
@@ -271,23 +279,6 @@
                                 <?php endif; ?>
                             </div>
                             <!-- /.form-group -->
-
-                            <label for="joining_position"><?php echo e(__('Department')); ?> <span class="text-danger">*</span></label>
-                            <div class="form-group<?php echo e($errors->has('joining_position') ? ' has-error' : ''); ?> has-feedback">
-                                <select name="joining_position" id="joining_position" class="form-control">
-                                    <option value="" selected disabled><?php echo e(__('Select one')); ?></option>
-                                    <?php $departments = \App\Department::all(); ?>
-                                    <?php $__currentLoopData = $departments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $department): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($department['id']); ?>"><?php echo e($department['department']); ?></option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                </select>
-                                <?php if($errors->has('joining_position')): ?>
-                                <span class="help-block">
-                                    <strong><?php echo e($errors->first('joining_position')); ?></strong>
-                                </span>
-                                <?php endif; ?>
-                            </div>
-                            <!-- /.form-group -->
                         </div>
 
                         <div class="col-md-3">
@@ -306,7 +297,6 @@
                                     <option value="<?php echo e($reference['name']); ?>"><?php echo e($reference['name']); ?></option>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
-
                             </div>
                             <!-- /.form-group -->
 
@@ -366,9 +356,29 @@
                                 <?php endif; ?>
                             </div>
                             <!-- /.form-group -->
+
+                            <label for="joining_position"><?php echo e(__('Department')); ?> <span class="text-danger">*</span></label>
+                            <div class="form-group<?php echo e($errors->has('joining_position') ? ' has-error' : ''); ?> has-feedback">
+                                <select name="joining_position" id="joining_position" class="form-control">
+                                    <option value="" selected disabled><?php echo e(__('Select one')); ?></option>
+                                    <?php $departments = \App\Department::all(); ?>
+                                    <?php $__currentLoopData = $departments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $department): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($department['id']); ?>"><?php echo e($department['department']); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </select>
+                                <?php if($errors->has('joining_position')): ?>
+                                <span class="help-block">
+                                    <strong><?php echo e($errors->first('joining_position')); ?></strong>
+                                </span>
+                                <?php endif; ?>
+                            </div>
+                            <!-- /.form-group -->
+
                         </div>
 
-                        <!-- /.col -->
+                        <div class="col-md-12">
+                            <div class="row">
+                                                        <!-- /.col -->
                         <div class="col-md-4">
                             <label for="academic_qualification"><?php echo e(__('Academic Qualification')); ?></label>
                             <div class="form-group<?php echo e($errors->has('academic_qualification') ? ' has-error' : ''); ?> has-feedback">
@@ -381,6 +391,7 @@
                             </div>
                             <!-- /.form-group -->
                         </div>
+
                         <div class="col-md-4">
                             <label for="professional_qualification"><?php echo e(__('Professional Qualification')); ?></label>
                             <div class="form-group<?php echo e($errors->has('professional_qualification') ? ' has-error' : ''); ?> has-feedback">
@@ -393,6 +404,7 @@
                             </div>
                             <!-- /.form-group -->
                         </div>
+
                         <!-- /.col -->
                         <div class="col-md-4">
                             <label for="experience"><?php echo e(__('Experience')); ?></label>
@@ -406,14 +418,17 @@
                             </div>
 
                         </div>
-
+                            </div>
+                        </div>
                         <!-- /.row -->
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
                         <a href="<?php echo e(url('/people/employees')); ?>" class="btn btn-danger btn-flat"><i class="icon fa fa-close"></i><?php echo e(__('Cancel')); ?> </a>
                         <button type="submit" class="btn btn-primary btn-flat"><i class="icon fa fa-plus"></i>
-                            <?php echo e(__('Add')); ?></button>
+                            <?php echo e(__('Add')); ?>
+
+                        </button>
                     </div>
             </form>
         </div>

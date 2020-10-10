@@ -13,6 +13,7 @@ use App\Attendance;
 use App\WorkingDay;
 
 use App\LeaveCategory;
+use App\Services\Attendence;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
@@ -23,10 +24,16 @@ class AttendanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
+    public function __construct(Attendence $att)
+    {  
+        $this->att = $att;
+    }
     public function index()
     {
-        $date = date('d');
+        // This is for Cron Job
+        $this->att->setAttendence();
+        
+        $date = date('Y-m');
         $month = date('m');
         $year = date('Y');
 
@@ -37,6 +44,7 @@ class AttendanceController extends Controller
         $monthly_holidays = $this->monthly_holidays($year, $month);
 
         return view('administrator.hrm.attendance.manage_attendance', compact('date', 'number_of_days', 'attendances', 'employees', 'weekly_holidays', 'monthly_holidays'));
+        
     }
 
     /**
@@ -72,14 +80,15 @@ class AttendanceController extends Controller
         $employees = User::query()
             ->leftjoin('designations as designations', 'users.designation_id', '=', 'designations.id')
             ->orderBy('users.name', 'ASC')
-            ->where('users.access_label', '>=', 2)
-            ->where('users.access_label', '<=', 3)
+            ->where('users.role', '=', 2)
+            // ->where('users.access_label', '<=', 3)
             ->get(['designations.designation', 'users.name', 'users.id'])
             ->toArray();
 
         $leave_categories = LeaveCategory::get()
             ->where('deletion_status', 0)
             ->toArray();
+
         $date = $request->date;
 
         $attendances = Attendance::where('attendance_date', $date)
@@ -156,7 +165,7 @@ class AttendanceController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function get_report(Request $request)
-    {
+    {        
         $date = $request->date;
 
         $month = date("m", strtotime($date));

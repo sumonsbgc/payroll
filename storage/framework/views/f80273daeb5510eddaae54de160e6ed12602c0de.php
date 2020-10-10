@@ -71,16 +71,14 @@
                             <th><?php echo e(__('SL#')); ?></th>
                             <th><?php echo e(__('Employee Name')); ?></th>
                             <th><?php echo e(__('Designation')); ?></th>
-                            <th  class="text-center"><?php echo e(__('Attendance')); ?></th>
+                            <th class="text-center"><?php echo e(__('Attendance')); ?></th>
                             <th><?php echo e(__('Leave Category')); ?></th>
                             <th><?php echo e(__('In Time')); ?></th>
                             <th><?php echo e(__('Out Time')); ?></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                            $sl = 1
-                        ?>
+                    <?php $sl = 1 ?>
                         <?php $__currentLoopData = $employees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $employee): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
                             <td><?php echo e($sl++); ?></td>
@@ -90,6 +88,7 @@
                                 <input type="hidden" name="attendance_date[]" value="<?php echo e($date); ?>">
                             </td>
                             <td><?php echo e($employee['designation']); ?></td>
+                            
                             <?php $__currentLoopData = $attendances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attendance): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <?php if($employee['id'] == $attendance['user_id']): ?>
                             <input type="hidden" name="attendance_id[]" value="<?php echo e($attendance['id']); ?>">
@@ -97,7 +96,6 @@
                                 <div class="form-group">
                                     <div class="checkbox">
                                         <label>
-
                                             <?php if($attendance['attendance_status'] == 1): ?>
                                                 <input type="hidden" name="attendance_status[]" value="1"><input checked type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value">
                                             <?php else: ?>

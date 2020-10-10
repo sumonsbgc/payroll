@@ -46,15 +46,7 @@ class PayrollController extends Controller {
 	 */
 	public function create($user_id) {
 		$employee_id = $user_id;
-
-		$employees = User::query()
-			->leftjoin('designations as designations', 'users.designation_id', '=', 'designations.id')
-			->orderBy('users.name', 'ASC')
-			->where('users.access_label', '>=', 2)
-			->where('users.access_label', '<=', 3)
-			->get(['designations.designation', 'users.name', 'users.id'])
-			->toArray();
-
+		$employees = User::where('role', 2)->get(['id', 'name']);
 		$salary = Payroll::where('user_id', $employee_id)
 			->first();
 
@@ -72,17 +64,10 @@ class PayrollController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(Request $request) {
+		
 		$salary = request()->validate([
 			'employee_type' => 'required',
 			'basic_salary' => 'required|numeric',
-			'house_rent_allowance' => 'nullable|numeric',
-			'medical_allowance' => 'nullable|numeric',
-			'special_allowance' => 'nullable|numeric',
-			'provident_fund_contribution' => 'nullable|numeric',
-			'other_allowance' => 'nullable|numeric',
-			'tax_deduction' => 'nullable|numeric',
-			'provident_fund_deduction' => 'nullable|numeric',
-			'other_deduction' => 'nullable|numeric',
 		]);
 
 		$result = Payroll::create($salary + ['created_by' => auth()->user()->id, 'user_id' => $request->user_id]);

@@ -30,17 +30,17 @@ class IncrementController extends Controller
 
     public function newIncrementStore(Request $request)
     {
-        $oldbasics = Payroll::all()->where('user_id', $request->emp_id);
-        foreach ($oldbasics as $oldbasic) {
-            $parollid=$oldbasic->id;
-            $prevbasic=$oldbasic->basic_salary;
-        }
-        
+
+        // $oldbasics = Payroll::all()->where('user_id', $request->emp_id);
+        // foreach ($oldbasics as $oldbasic) {
+        //     $parollid=$oldbasic->id;
+        //     $prevbasic=$oldbasic->basic_salary;
+        // }
 
 
         if ($request->emp_id=="" or $request->amount=="") {
             return redirect('hrm/payroll/increment/search')->with('exception', 'Select Employee and Enter Amount !');
-        } else {
+        } else {            
             $increments = new Increment;
             $increments->emp_id=$request->emp_id;
             $increments->date=$request->date;
@@ -51,13 +51,12 @@ class IncrementController extends Controller
 
 
 
-            $payrolls = Payroll::find($parollid);
-            $payrolls->basic_salary=$prevbasic+$request->amount;
-            $payrolls->save();
+            // $payrolls = Payroll::find($parollid);
+            // $payrolls->basic_salary=$prevbasic+$request->amount;
+            // $payrolls->save();
 
         
             return redirect('/hrm/payroll/increment/list')->with('message', 'Increment Added Successful!');
-            ;
         }
     }
 

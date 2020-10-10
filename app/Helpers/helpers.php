@@ -16,4 +16,27 @@ if (!function_exists("get_compnay_address")) {
     }
 }
 
-                //<h3>{{ __('S. A. Corporation Limited') }}</h3>
+if (!function_exists("getEmployeeType")) {
+    function getEmployeeType()
+    {
+        return [
+            "1" => "Provision",
+            "2" => "Permanent",
+            "3" => "Full Time",
+            "4" => "Part Time",
+        ];
+    }
+}
+
+if (!function_exists("getPaymentType")) {
+    function getPaymentType()
+    {
+        return [
+            "1" => "Cash Payment",
+            "2" => "Chaque Payment",
+            "3" => "Bank Payment",
+        ];
+    }
+}
+
+//<h3>{{ __('S. A. Corporation Limited') }}</h3>
